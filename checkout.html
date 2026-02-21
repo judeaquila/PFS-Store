@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout - GreenBasket</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      .checkout-card {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+
+      .summary-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg px-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">GreenBasket</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="products.html">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cart.html">
+                Cart <span id="cart-count" class="cart-badge">0</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero hero-small text-center">
+      <div class="container">
+        <h1>Secure Checkout</h1>
+        <p>Complete your purchase safely and securely.</p>
+      </div>
+    </section>
+
+    <!-- CHECKOUT CONTENT -->
+    <div class="container my-5">
+      <div class="row g-5">
+        <!-- LEFT: BILLING FORM -->
+        <div class="col-lg-7">
+          <div class="card checkout-card p-4">
+            <h4 class="mb-4">Billing Details</h4>
+
+            <form id="checkoutForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-control" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-control" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Address</label>
+                <input type="text" class="form-control" required />
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">City</label>
+                  <input type="text" class="form-control" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Postal Code</label>
+                  <input type="text" class="form-control" required />
+                </div>
+              </div>
+
+              <h5 class="mt-4">Payment Method</h5>
+
+              <div class="mb-3">
+                <label class="form-label">Card Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="XXXX XXXX XXXX XXXX"
+                  required
+                />
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Expiry</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="MM/YY"
+                    required
+                  />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">CVV</label>
+                  <input type="text" class="form-control" required />
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-green w-100 mt-3">
+                Complete Payment
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- RIGHT: ORDER SUMMARY -->
+        <div class="col-lg-5">
+          <div class="card checkout-card p-4">
+            <h4 class="mb-4">Order Summary</h4>
+
+            <div id="order-items"></div>
+
+            <hr />
+
+            <div class="d-flex justify-content-between">
+              <span>Subtotal</span>
+              <span>$<span id="subtotal">0</span></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <span>Shipping</span>
+              <span>$<span id="shipping">5.00</span></span>
+            </div>
+
+            <hr />
+
+            <div class="d-flex justify-content-between fw-bold fs-5">
+              <span>Total</span>
+              <span>$<span id="grand-total">0</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <!-- Brand -->
+          <div class="col-md-3 mb-4">
+            <h5 class="text-success">GreenBasket</h5>
+            <p class="small">
+              Premium packaged organic foods designed for a healthier lifestyle.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-md-3 mb-4">
+            <h6>Quick Links</h6>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="cart.html">Cart</a>
+            <a href="login.html">Login</a>
+            <a href="https://www.yourmainwebsite.com" target="_blank">
+              Main Website
+            </a>
+          </div>
+
+          <!-- Customer Support -->
+          <div class="col-md-3 mb-4">
+            <h6>Support</h6>
+            <a href="#">Contact Us</a>
+            <a href="#">FAQs</a>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Returns</a>
+          </div>
+
+          <!-- Newsletter -->
+          <div class="col-md-3 mb-4 footer-newsletter">
+            <h6>Stay Updated</h6>
+            <p class="small">Subscribe for healthy tips & offers.</p>
+            <form class="d-flex">
+              <input
+                type="email"
+                class="form-control me-2"
+                placeholder="Email"
+              />
+              <button class="btn btn-green" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bottom -->
+        <div class="text-center footer-bottom">
+          © 2026 GreenBasket. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- TOAST -->
+    <div class="position-fixed bottom-0 end-0 p-3">
+      <div
+        id="liveToast"
+        class="toast align-items-center text-bg-success border-0"
+      >
+        <div class="d-flex">
+          <div class="toast-body" id="toast-body"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <script>
+      if (!cart || cart.length === 0) {
+        window.location.href = "cart.html";
+      }
+
+      function renderCheckout() {
+        const orderContainer = document.getElementById("order-items");
+        const subtotalEl = document.getElementById("subtotal");
+        const grandTotalEl = document.getElementById("grand-total");
+
+        if (!orderContainer) return;
+
+        orderContainer.innerHTML = "";
+        let subtotal = 0;
+
+        cart.forEach((item) => {
+          subtotal += item.price * item.quantity;
+
+          orderContainer.innerHTML += `
+      <div class="d-flex align-items-center mb-3">
+        <img src="${item.image}" class="summary-img me-3">
+        <div class="flex-grow-1">
+          <div>${item.name}</div>
+          <small class="text-muted">Qty: ${item.quantity}</small>
+        </div>
+        <div>$${(item.price * item.quantity).toFixed(2)}</div>
+      </div>
+    `;
+        });
+
+        const shipping = 5;
+        const grandTotal = subtotal + shipping;
+
+        subtotalEl.innerText = subtotal.toFixed(2);
+        grandTotalEl.innerText = grandTotal.toFixed(2);
+      }
+
+      renderCheckout();
+
+      document
+        .getElementById("checkoutForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          showToast("Payment Successful! 🎉");
+
+          localStorage.removeItem("cart");
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 2000);
+        });
+    </script>
+  </body>
+</html>

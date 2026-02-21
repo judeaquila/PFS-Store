@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Products - GreenBasket</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      .product-img {
+        border-radius: 14px;
+        transition: 0.3s ease;
+        height: 220px;
+        object-fit: cover;
+      }
+      .product-img:hover {
+        transform: scale(1.03);
+      }
+      .rating {
+        color: #ffc107;
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg px-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">GreenBasket</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="products.html">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cart.html">
+                Cart <span id="cart-count" class="cart-badge">0</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero hero-small text-center">
+      <div class="container">
+        <h1>Our Products</h1>
+        <p>Explore our curated selection of healthy packaged foods.</p>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <div class="container mb-4">
+      <input
+        type="text"
+        id="searchInput"
+        onkeyup="filterProducts()"
+        class="form-control"
+        placeholder="Search products..."
+      />
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <div class="container">
+      <div class="row g-4">
+        <!-- PRODUCT 1 -->
+        <div class="col-md-4 product-card" data-name="Organic Almonds">
+          <div class="card p-4 text-center">
+            <a href="product-details.html?id=1">
+              <img
+                src="https://images.unsplash.com/photo-1589307004393-9f84a8a5a5b8"
+                class="img-fluid mb-3 product-img"
+                alt="Organic Almonds"
+              />
+            </a>
+
+            <h5>Organic Almonds</h5>
+
+            <div class="rating mb-2">
+              ★★★★★ <span class="text-muted">(4.8)</span>
+            </div>
+
+            <p>$12.99</p>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+              <button class="qty-btn" onclick="updateQtyInput('qty1', -1)">
+                -
+              </button>
+              <input
+                type="number"
+                id="qty1"
+                value="1"
+                min="1"
+                class="form-control mx-2 text-center"
+                style="width: 70px"
+              />
+              <button class="qty-btn" onclick="updateQtyInput('qty1', 1)">
+                +
+              </button>
+            </div>
+
+            <button
+              class="btn btn-green w-100"
+              onclick="
+                addMultipleToCart(
+                  1,
+                  'Organic Almonds',
+                  12.99,
+                  'https://images.unsplash.com/photo-1589307004393-9f84a8a5a5b8',
+                  'qty1',
+                )
+              "
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- PRODUCT 2 -->
+        <div class="col-md-4 product-card" data-name="Healthy Granola">
+          <div class="card p-4 text-center">
+            <a href="product-details.html?id=2">
+              <img
+                src="https://images.unsplash.com/photo-1586201375761-83865001e31c"
+                class="img-fluid mb-3 product-img"
+                alt="Healthy Granola"
+              />
+            </a>
+
+            <h5>Healthy Granola</h5>
+
+            <div class="rating mb-2">
+              ★★★★☆ <span class="text-muted">(4.5)</span>
+            </div>
+
+            <p>$8.99</p>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+              <button class="qty-btn" onclick="updateQtyInput('qty2', -1)">
+                -
+              </button>
+              <input
+                type="number"
+                id="qty2"
+                value="1"
+                min="1"
+                class="form-control mx-2 text-center"
+                style="width: 70px"
+              />
+              <button class="qty-btn" onclick="updateQtyInput('qty2', 1)">
+                +
+              </button>
+            </div>
+
+            <button
+              class="btn btn-green w-100"
+              onclick="
+                addMultipleToCart(
+                  2,
+                  'Healthy Granola',
+                  8.99,
+                  'https://images.unsplash.com/photo-1586201375761-83865001e31c',
+                  'qty2',
+                )
+              "
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- PRODUCT 3 -->
+        <div class="col-md-4 product-card" data-name="Green Tea Pack">
+          <div class="card p-4 text-center">
+            <a href="product-details.html?id=3">
+              <img
+                src="https://images.unsplash.com/photo-1576045057995-568f588f82fb"
+                class="img-fluid mb-3 product-img"
+                alt="Green Tea Pack"
+              />
+            </a>
+
+            <h5>Green Tea Pack</h5>
+
+            <div class="rating mb-2">
+              ★★★★☆ <span class="text-muted">(4.6)</span>
+            </div>
+
+            <p>$6.99</p>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+              <button class="qty-btn" onclick="updateQtyInput('qty3', -1)">
+                -
+              </button>
+              <input
+                type="number"
+                id="qty3"
+                value="1"
+                min="1"
+                class="form-control mx-2 text-center"
+                style="width: 70px"
+              />
+              <button class="qty-btn" onclick="updateQtyInput('qty3', 1)">
+                +
+              </button>
+            </div>
+
+            <button
+              class="btn btn-green w-100"
+              onclick="
+                addMultipleToCart(
+                  3,
+                  'Green Tea Pack',
+                  6.99,
+                  'https://images.unsplash.com/photo-1576045057995-568f588f82fb',
+                  'qty3',
+                )
+              "
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <!-- Brand -->
+          <div class="col-md-3 mb-4">
+            <h5 class="text-success">GreenBasket</h5>
+            <p class="small">
+              Premium packaged organic foods designed for a healthier lifestyle.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-md-3 mb-4">
+            <h6>Quick Links</h6>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="cart.html">Cart</a>
+            <a href="login.html">Login</a>
+            <a href="https://www.yourmainwebsite.com" target="_blank">
+              Main Website
+            </a>
+          </div>
+
+          <!-- Customer Support -->
+          <div class="col-md-3 mb-4">
+            <h6>Support</h6>
+            <a href="#">Contact Us</a>
+            <a href="#">FAQs</a>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Returns</a>
+          </div>
+
+          <!-- Newsletter -->
+          <div class="col-md-3 mb-4 footer-newsletter">
+            <h6>Stay Updated</h6>
+            <p class="small">Subscribe for healthy tips & offers.</p>
+            <form class="d-flex">
+              <input
+                type="email"
+                class="form-control me-2"
+                placeholder="Email"
+              />
+              <button class="btn btn-green" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bottom -->
+        <div class="text-center footer-bottom">
+          © 2026 GreenBasket. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- TOAST -->
+    <div class="position-fixed bottom-0 end-0 p-3">
+      <div
+        id="liveToast"
+        class="toast align-items-center text-bg-success border-0"
+      >
+        <div class="d-flex">
+          <div class="toast-body" id="toast-body"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <script>
+      function updateQtyInput(id, change) {
+        const input = document.getElementById(id);
+        let value = parseInt(input.value) || 1;
+        value += change;
+        if (value < 1) value = 1;
+        input.value = value;
+      }
+
+      function addMultipleToCart(id, name, price, image, qtyInputId) {
+        const qty = parseInt(document.getElementById(qtyInputId).value);
+        for (let i = 0; i < qty; i++) {
+          addToCart(id, name, price);
+        }
+      }
+    </script>
+  </body>
+</html>

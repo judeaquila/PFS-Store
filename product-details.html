@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Product Details - GreenBasket</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      /* Star rating style */
+      .rating {
+        color: #ffc107;
+        font-size: 18px;
+      }
+
+      .product-img {
+        border-radius: 16px;
+        transition: 0.3s ease;
+      }
+
+      .product-img:hover {
+        transform: scale(1.03);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg px-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">GreenBasket</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="products.html">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cart.html">
+                Cart <span id="cart-count" class="cart-badge">0</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero hero-small text-center">
+      <div class="container">
+        <h1>Product Details</h1>
+        <p>Learn more about this healthy product.</p>
+      </div>
+    </section>
+
+    <!-- PRODUCT DETAILS -->
+    <section class="container my-5">
+      <div class="row g-5 align-items-center">
+        <!-- IMAGE -->
+        <div class="col-md-6 text-center">
+          <img
+            src="https://images.unsplash.com/photo-1589307004393-9f84a8a5a5b8"
+            class="img-fluid product-img"
+            alt="Organic Almonds"
+          />
+        </div>
+
+        <!-- DETAILS -->
+        <div class="col-md-6">
+          <h2>Organic Almonds</h2>
+
+          <!-- RATING -->
+          <div class="rating mb-2">
+            ★★★★★ <span class="text-muted fs-6">(4.8 / 5 • 124 reviews)</span>
+          </div>
+
+          <h4 class="mb-3">$12.99</h4>
+
+          <p>
+            Premium quality organic almonds packed fresh to preserve taste and
+            nutrition. Rich in protein, fiber, and healthy fats — perfect for
+            daily snacking.
+          </p>
+
+          <ul class="mb-4">
+            <li>100% Organic</li>
+            <li>No preservatives</li>
+            <li>High in protein</li>
+            <li>Resealable packaging</li>
+          </ul>
+
+          <!-- QUANTITY -->
+          <div class="d-flex align-items-center mb-4">
+            <button class="qty-btn" onclick="updateQtyInput('detailQty', -1)">
+              -
+            </button>
+
+            <input
+              type="number"
+              id="detailQty"
+              value="1"
+              min="1"
+              class="form-control mx-2 text-center"
+              style="width: 80px"
+            />
+
+            <button class="qty-btn" onclick="updateQtyInput('detailQty', 1)">
+              +
+            </button>
+          </div>
+
+          <!-- ADD TO CART -->
+          <button
+            class="btn btn-green w-100"
+            onclick="
+              addMultipleToCart(1, 'Organic Almonds', 12.99, 'detailQty')
+            "
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <!-- Brand -->
+          <div class="col-md-3 mb-4">
+            <h5 class="text-success">GreenBasket</h5>
+            <p class="small">
+              Premium packaged organic foods designed for a healthier lifestyle.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-md-3 mb-4">
+            <h6>Quick Links</h6>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="cart.html">Cart</a>
+            <a href="login.html">Login</a>
+            <a href="https://www.yourmainwebsite.com" target="_blank">
+              Main Website
+            </a>
+          </div>
+
+          <!-- Customer Support -->
+          <div class="col-md-3 mb-4">
+            <h6>Support</h6>
+            <a href="#">Contact Us</a>
+            <a href="#">FAQs</a>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Returns</a>
+          </div>
+
+          <!-- Newsletter -->
+          <div class="col-md-3 mb-4 footer-newsletter">
+            <h6>Stay Updated</h6>
+            <p class="small">Subscribe for healthy tips & offers.</p>
+            <form class="d-flex">
+              <input
+                type="email"
+                class="form-control me-2"
+                placeholder="Email"
+              />
+              <button class="btn btn-green" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bottom -->
+        <div class="text-center footer-bottom">
+          © 2026 GreenBasket. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- TOAST -->
+    <div class="position-fixed bottom-0 end-0 p-3">
+      <div
+        id="liveToast"
+        class="toast align-items-center text-bg-success border-0"
+      >
+        <div class="d-flex">
+          <div class="toast-body" id="toast-body"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <script>
+      /* Quantity buttons */
+      function updateQtyInput(id, change) {
+        const input = document.getElementById(id);
+        let value = parseInt(input.value) || 1;
+        value += change;
+        if (value < 1) value = 1;
+        input.value = value;
+      }
+
+      /* Add multiple items */
+      function addMultipleToCart(id, name, price, qtyInputId) {
+        const qty = parseInt(document.getElementById(qtyInputId).value);
+
+        for (let i = 0; i < qty; i++) {
+          addToCart(id, name, price);
+        }
+      }
+    </script>
+  </body>
+</html>
