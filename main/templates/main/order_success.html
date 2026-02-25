@@ -1,0 +1,19 @@
+{% extends "main/base.html" %} {% block title %}Order Successful{% endblock %}
+{% block content %}
+<section class="hero hero-small text-center">
+  <div class="container">
+    <h1>Order Successful 🎉</h1>
+    <p>Thank you for shopping with Zee Afrika.</p>
+  </div>
+</section>
+
+<div class="container text-center my-5">
+  <h4>Order #{{ order.id }}</h4>
+  <p>Status: {{ order.get_status_display }}</p>
+  <p>Total Paid: ${{ order.total_amount }}</p>
+
+  <a href="{% url 'product_list' %}" class="btn btn-green mt-3">
+    Continue Shopping
+  </a>
+</div>
+{% endblock %}

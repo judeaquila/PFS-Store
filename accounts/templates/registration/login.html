@@ -1,0 +1,38 @@
+{% extends "main/base.html" %} {% block title %}Login | Zee Afrika{% endblock %}
+{% block content %}
+
+<section class="hero hero-small text-center">
+  <div class="container">
+    <h1>Login</h1>
+    <p>Access your account to continue shopping.</p>
+  </div>
+</section>
+
+<div class="container my-5" style="max-width: 500px">
+  <div class="card shadow-sm p-4">
+    <form method="POST">
+      {% csrf_token %} {{ form.non_field_errors }}
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        {{ form.username }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        {{ form.password }}
+      </div>
+
+      <button type="submit" class="btn btn-success w-100">Login</button>
+    </form>
+
+    <div class="text-center mt-3">
+      <small>
+        Don’t have an account?
+        <a href="{% url 'register' %}">Register</a>
+      </small>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "main/base.html" %} {% block title %}Dashboard | Zee Afrika
+{%endblock %} {% block content %}
+
+<section class="hero hero-small text-center">
+  <div class="container">
+    <h1>My Dashboard</h1>
+    <p>
+      Welcome back, {{ request.user.first_name|default:request.user.email }}
+    </p>
+  </div>
+</section>
+
+<div class="container my-5">
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm text-center">
+        <h5>Total Orders</h5>
+        <h2>{{ orders_count }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-3">Recent Orders</h4>
+
+  {% if recent_orders %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in recent_orders %}
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.get_status_display }}</td>
+        <td>${{ order.total_amount }}</td>
+        <td>{{ order.created_at|date:"M d, Y" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="text-muted">You have not placed any orders yet.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

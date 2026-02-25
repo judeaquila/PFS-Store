@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zee Afrika | Coming Soon</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Inter Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #2f9e44;
+        --primary-dark: #237a35;
+        --light-bg: #f6fff8;
+      }
+
+      * {
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(-45deg, #2f9e44, #237a35, #52b788, #40916c);
+        background-size: 400% 400%;
+        animation: gradientMove 10s ease infinite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      @keyframes gradientMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .content {
+        animation: fadeInUp 1.2s ease forwards;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .countdown div {
+        font-size: 1.8rem;
+        font-weight: 600;
+      }
+
+      .countdown span {
+        font-size: 0.85rem;
+        opacity: 0.8;
+      }
+
+      .email-input {
+        border-radius: 30px;
+        border: none;
+        padding: 12px 20px;
+      }
+
+      .btn-custom {
+        background: white;
+        color: var(--primary);
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-weight: 500;
+        border: none;
+        transition: 0.3s ease;
+      }
+
+      .btn-custom:hover {
+        background: var(--light-bg);
+        transform: translateY(-2px);
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+      }
+
+      .tagline {
+        max-width: 500px;
+        margin: 0 auto 30px;
+        opacity: 0.9;
+      }
+
+      .footer-text {
+        position: absolute;
+        bottom: 20px;
+        font-size: 0.8rem;
+        opacity: 0.7;
+      }
+
+      /* Floating Organic Shapes */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.5;
+        animation: float 12s ease-in-out infinite alternate;
+        z-index: 0;
+      }
+
+      .blob1 {
+        width: 400px;
+        height: 400px;
+        background: #52b788;
+        top: -100px;
+        left: -100px;
+      }
+
+      .blob2 {
+        width: 350px;
+        height: 350px;
+        background: #74c69d;
+        bottom: -120px;
+        right: -80px;
+        animation-delay: 2s;
+      }
+
+      .blob3 {
+        width: 250px;
+        height: 250px;
+        background: #95d5b2;
+        top: 40%;
+        left: 60%;
+        animation-delay: 4s;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0px) translateX(0px) scale(1);
+        }
+        50% {
+          transform: translateY(-30px) translateX(20px) scale(1.05);
+        }
+        100% {
+          transform: translateY(20px) translateX(-20px) scale(0.95);
+        }
+      }
+
+      /* Ensure content is above blobs */
+      .content {
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Optional subtle glass effect */
+      .content {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 50px 30px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Floating Background Blobs -->
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <div class="content container">
+      <div class="logo">Zee Afrika</div>
+
+      <h1 class="display-5 fw-semibold mb-3">We're Launching Soon 🚀</h1>
+
+      <p class="tagline">
+        Premium packaged organic foods crafted for a healthier lifestyle. Our
+        online store is under construction.
+      </p>
+
+      <!-- Countdown -->
+      <div
+        class="row justify-content-center text-center countdown mb-4"
+        id="countdown"
+      >
+        <div class="col-3 col-md-2">
+          <div id="days">00</div>
+          <span>Days</span>
+        </div>
+        <div class="col-3 col-md-2">
+          <div id="hours">00</div>
+          <span>Hours</span>
+        </div>
+        <div class="col-3 col-md-2">
+          <div id="minutes">00</div>
+          <span>Minutes</span>
+        </div>
+        <div class="col-3 col-md-2">
+          <div id="seconds">00</div>
+          <span>Seconds</span>
+        </div>
+      </div>
+
+      <!-- Email Subscribe -->
+      <form class="d-flex justify-content-center flex-column flex-sm-row gap-2">
+        <input
+          type="email"
+          class="form-control email-input w-auto"
+          placeholder="Enter your email"
+          required
+        />
+        <button type="submit" class="btn btn-custom">Notify Me</button>
+      </form>
+    </div>
+
+    <div class="footer-text">© 2026 Zee Afrika. All rights reserved.</div>
+
+    <script>
+      // Set launch date (Edit this)
+      const launchDate = new Date("March 30, 2026 00:00:00").getTime();
+
+      const countdownFunction = setInterval(function () {
+        const now = new Date().getTime();
+        const distance = launchDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerHTML = days
+          .toString()
+          .padStart(2, "0");
+        document.getElementById("hours").innerHTML = hours
+          .toString()
+          .padStart(2, "0");
+        document.getElementById("minutes").innerHTML = minutes
+          .toString()
+          .padStart(2, "0");
+        document.getElementById("seconds").innerHTML = seconds
+          .toString()
+          .padStart(2, "0");
+
+        if (distance < 0) {
+          clearInterval(countdownFunction);
+          document.getElementById("countdown").innerHTML =
+            "<h4>We Are Live!</h4>";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
