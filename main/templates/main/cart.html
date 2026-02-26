@@ -3,7 +3,7 @@
 <div class="container py-5">
   <h2>Your Cart</h2>
 
-  {% if cart_items|length == 0 %}
+  {% if not cart_items %}
   <p class="text-muted">Your cart is empty.</p>
   {% else %}
   <table class="table mt-4 align-middle">
@@ -22,17 +22,17 @@
         <td>
           <div class="d-flex align-items-center">
             <img
-              src="{{ item.image }}"
+              src="{{ item.product.get_main_image_url }}"
               width="60"
               height="60"
               style="object-fit: cover; border-radius: 10px"
               class="me-3"
             />
-            {{ item.name }}
+            {{ item.product.name }}
           </div>
         </td>
 
-        <td>${{ item.price }}</td>
+        <td>${{ item.product.price }}</td>
 
         <td>
           <a
@@ -50,7 +50,7 @@
           >
         </td>
 
-        <td>${{ item.total_price }}</td>
+        <td>${{ item.get_total_price }}</td>
 
         <td>
           <a
@@ -65,7 +65,7 @@
   </table>
 
   <div class="text-end">
-    <h4>Total: ${{ total_price }}</h4>
+    <h4>Total: ${{ total }}</h4>
     {% if request.user.is_authenticated %}
     <a href="{% url 'checkout' %}" class="btn btn-green">
       Proceed to Checkout

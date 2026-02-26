@@ -22,7 +22,9 @@
       {% for order in orders %}
       <tr>
         <td>
-          <a href="{% url 'order_detail' order.id %}"> #{{ order.id }} </a>
+          <a href="{% url 'order_detail' order.id %}">
+            #{{ order.custom_id }}
+          </a>
         </td>
         <td>
           <span class="badge bg-secondary">

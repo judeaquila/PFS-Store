@@ -1,59 +1,222 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin - Orders</title>
+{% extends "accounts/base.html" %} {% load static %} {% block page_title %}
+Order Management {% endblock %} {% block content %}
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="mb-0">Orders</h4>
+    <small class="text-muted">Track and manage customer orders</small>
+  </div>
+</div>
 
-    <link rel="stylesheet" href="css/admin.css" />
-    <!-- optional external css -->
-  </head>
-  <body>
-    <!-- SIDEBAR (Products active) -->
-    <div class="collapse d-lg-block sidebar" id="sidebarMenu">
-      <h4 class="text-center d-none d-lg-block">GreenBasket Admin</h4>
-      <a href="admin-dashboard.html">Dashboard</a>
-      <a href="admin-products.html">Products</a>
-      <a href="admin-orders.html" class="active">Orders</a>
-      <a href="admin-users.html">Users</a>
-      <a href="admin-transactions.html">Transactions</a>
-      <a href="admin-settings.html">Settings</a>
+<!-- Order Summary Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Total Orders</h6>
+        <h5 class="text-success mb-0">320</h5>
+      </div>
     </div>
+  </div>
 
-    <div class="main-content">
-      <nav class="navbar bg-white shadow-sm rounded mb-4 px-3">
-        <span class="navbar-brand fw-semibold">Orders Management</span>
-      </nav>
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Pending</h6>
+        <h5 class="text-warning mb-0">18</h5>
+      </div>
+    </div>
+  </div>
 
-      <div class="bg-white p-4 rounded shadow-sm">
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Shipped</h6>
+        <h5 class="text-info mb-0">54</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Delivered</h6>
+        <h5 class="text-success mb-0">248</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by Order ID or Customer"
+        />
+      </div>
+
+      <div class="col-md-3">
+        <select class="form-select">
+          <option value="">All Status</option>
+          <option>Pending</option>
+          <option>Processing</option>
+          <option>Shipped</option>
+          <option>Delivered</option>
+          <option>Cancelled</option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <input type="date" class="form-control" />
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn btn-outline-success w-100">Filter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Orders Table -->
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><strong>#ZA1023</strong></td>
+            <td>John Traders Ltd</td>
+            <td>3</td>
+            <td>$450</td>
+            <td>
+              <span class="badge bg-warning text-dark"> Pending </span>
+            </td>
+            <td>Feb 25, 2026</td>
+            <td class="text-end">
+              <button
+                class="btn btn-sm btn-outline-success"
+                data-bs-toggle="modal"
+                data-bs-target="#orderDetailsModal"
+              >
+                View
+              </button>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>#ZA1022</strong></td>
+            <td>Fresh Foods Co.</td>
+            <td>5</td>
+            <td>$120</td>
+            <td>
+              <span class="badge bg-success"> Delivered </span>
+            </td>
+            <td>Feb 24, 2026</td>
+            <td class="text-end">
+              <button
+                class="btn btn-sm btn-outline-success"
+                data-bs-toggle="modal"
+                data-bs-target="#orderDetailsModal"
+              >
+                View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0">
+      <div class="modal-header">
+        <h5 class="modal-title">Order Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <strong>Customer:</strong><br />
+            John Traders Ltd<br />
+            john@example.com
+          </div>
+
+          <div class="col-md-6 text-md-end">
+            <strong>Status:</strong><br />
+            <span class="badge bg-warning text-dark"> Pending </span>
+          </div>
+        </div>
+
+        <hr />
+
         <table class="table align-middle">
-          <thead class="table-light">
+          <thead>
             <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Price</th>
               <th>Total</th>
-              <th>Status</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>#1023</td>
-              <td>John Doe</td>
-              <td>$129.99</td>
-              <td><span class="badge bg-success">Completed</span></td>
-              <td><button class="btn btn-sm btn-outline-dark">View</button></td>
+              <td>Packaging Bags (Large)</td>
+              <td>100</td>
+              <td>$0.30</td>
+              <td>$30</td>
+            </tr>
+            <tr>
+              <td>Sealing Machine Model X</td>
+              <td>1</td>
+              <td>$420</td>
+              <td>$420</td>
             </tr>
           </tbody>
         </table>
+
+        <div class="text-end">
+          <h6>Total: <span class="text-success">$450</span></h6>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <select class="form-select w-auto">
+          <option>Update Status</option>
+          <option>Processing</option>
+          <option>Shipped</option>
+          <option>Delivered</option>
+          <option>Cancelled</option>
+        </select>
+
+        <button class="btn btn-primary">Save Changes</button>
       </div>
     </div>
+  </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
+{% endblock %}

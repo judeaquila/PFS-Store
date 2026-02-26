@@ -1,246 +1,164 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Dashboard - GreenBasket</title>
+{% extends "accounts/base.html" %} {% block page_title %} Dashboard Overview
+{%endblock %} {% block content %}
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/admin.css" />
-  </head>
-  <body>
-    <!-- Toggle Button (Visible Below lg) -->
-    <button
-      class="btn btn-success d-lg-none m-3"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#sidebarMenu"
-    >
-      ☰ Menu
-    </button>
-
-    <!-- Sidebar -->
-    <div class="collapse d-lg-block sidebar" id="sidebarMenu">
-      <!-- Mobile Close Button -->
-      <div
-        class="d-flex justify-content-between align-items-center mb-4 d-lg-none"
-      >
-        <h5 class="mb-0">Menu</h5>
-        <button
-          class="btn btn-sm btn-light"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#sidebarMenu"
-        >
-          ✕
-        </button>
+<div class="row g-4">
+  <!-- KPI Cards -->
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Total Sales</h6>
+        <h4 class="text-success">$12,450</h4>
+        <small class="text-success">+8% this month</small>
       </div>
-
-      <!-- Desktop Title -->
-      <h4 class="text-center d-none d-lg-block">GreenBasket Admin</h4>
-
-      <a href="admin-dashboard.html" class="active">Dashboard</a>
-      <a href="admin-products.html">Products</a>
-      <a href="admin-orders.html">Orders</a>
-      <a href="admin-users.html">Users</a>
-      <a href="admin-transactions.html">Transactions</a>
-      <a href="admin-settings.html">Settings</a>
-      <a href="index.html">Back to Site</a>
     </div>
+  </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Top Navbar -->
-      <nav
-        class="navbar navbar-expand-lg navbar-light bg-white shadow-sm rounded mb-4 px-3"
-      >
-        <div class="container-fluid">
-          <span class="navbar-brand fw-semibold">Dashboard</span>
-
-          <div class="ms-auto d-flex align-items-center">
-            <span class="me-3 text-muted">Admin</span>
-            <button class="btn btn-outline-success btn-sm">Logout</button>
-          </div>
-        </div>
-      </nav>
-
-      <!-- Welcome Section -->
-      <div class="bg-white p-4 rounded shadow-sm">
-        <h4>Welcome Back 👋</h4>
-        <p class="text-muted mb-0">
-          This is your admin control panel for managing products, orders, and
-          users.
-        </p>
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Total Orders</h6>
+        <h4 class="text-success">320</h4>
+        <small class="text-muted">This month</small>
       </div>
+    </div>
+  </div>
 
-      <!-- Stats Cards -->
-      <div class="row g-4 mt-1">
-        <!-- Products -->
-        <div class="col-md-6 col-xl-3">
-          <div class="stat-card">
-            <div class="stat-icon bg-success-subtle text-success">📦</div>
-            <div>
-              <h6 class="text-muted">Total Products</h6>
-              <h4 class="fw-bold mb-0">24</h4>
-            </div>
-          </div>
-        </div>
-
-        <!-- Orders -->
-        <div class="col-md-6 col-xl-3">
-          <div class="stat-card">
-            <div class="stat-icon bg-primary-subtle text-primary">🛒</div>
-            <div>
-              <h6 class="text-muted">Total Orders</h6>
-              <h4 class="fw-bold mb-0">156</h4>
-            </div>
-          </div>
-        </div>
-
-        <!-- Users -->
-        <div class="col-md-6 col-xl-3">
-          <div class="stat-card">
-            <div class="stat-icon bg-warning-subtle text-warning">👥</div>
-            <div>
-              <h6 class="text-muted">Total Users</h6>
-              <h4 class="fw-bold mb-0">89</h4>
-            </div>
-          </div>
-        </div>
-
-        <!-- Revenue -->
-        <div class="col-md-6 col-xl-3">
-          <div class="stat-card">
-            <div class="stat-icon bg-danger-subtle text-danger">💰</div>
-            <div>
-              <h6 class="text-muted">Revenue</h6>
-              <h4 class="fw-bold mb-0">$4,860</h4>
-            </div>
-          </div>
-        </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Pending Orders</h6>
+        <h4 class="text-success">18</h4>
+        <small class="text-warning">Requires attention</small>
       </div>
+    </div>
+  </div>
 
-      <!-- Recent Orders -->
-      <div class="bg-white p-4 rounded shadow-sm mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="mb-0">Recent Orders</h5>
-          <a href="admin-orders.html" class="btn btn-sm btn-success"
-            >View All</a
-          >
-        </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Low Stock Items</h6>
+        <h4 class="text-success">6</h4>
+        <small class="text-danger">Restock soon</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Revenue Chart + Low Stock -->
+<div class="row mt-4 g-4">
+  <!-- Revenue Chart -->
+  <div class="col-md-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="mb-3">Revenue Overview</h5>
+        <canvas id="revenueChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low Stock List -->
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="mb-3">Low Stock Alerts</h5>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between">
+            Packaging Bags (Large)
+            <span class="badge bg-danger">5 left</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            Tomato Paste 500g
+            <span class="badge bg-danger">8 left</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            Sealing Machine Model X
+            <span class="badge bg-danger">2 left</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Orders -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="mb-3">Recent Orders</h5>
 
         <div class="table-responsive">
-          <table class="table align-middle">
+          <table class="table table-hover align-middle">
             <thead class="table-light">
               <tr>
                 <th>Order ID</th>
                 <th>Customer</th>
-                <th>Date</th>
-                <th>Amount</th>
+                <th>Category</th>
+                <th>Total</th>
                 <th>Status</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>#1023</td>
-                <td>John Doe</td>
-                <td>20 Feb 2026</td>
-                <td>$129.99</td>
-                <td><span class="badge bg-success">Completed</span></td>
+                <td>#ZA1023</td>
+                <td>John Traders Ltd</td>
+                <td>Packaging Materials</td>
+                <td>$450</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td>Feb 25, 2026</td>
               </tr>
-
               <tr>
-                <td>#1022</td>
-                <td>Sarah Wilson</td>
-                <td>19 Feb 2026</td>
-                <td>$78.50</td>
-                <td><span class="badge bg-warning text-dark">Pending</span></td>
+                <td>#ZA1022</td>
+                <td>Fresh Foods Co.</td>
+                <td>Packaged Foods</td>
+                <td>$120</td>
+                <td><span class="badge bg-success">Delivered</span></td>
+                <td>Feb 24, 2026</td>
               </tr>
-
               <tr>
-                <td>#1021</td>
-                <td>Michael Lee</td>
-                <td>18 Feb 2026</td>
-                <td>$54.00</td>
-                <td><span class="badge bg-danger">Cancelled</span></td>
-              </tr>
-
-              <tr>
-                <td>#1020</td>
-                <td>Emily Carter</td>
-                <td>17 Feb 2026</td>
-                <td>$214.20</td>
-                <td><span class="badge bg-success">Completed</span></td>
+                <td>#ZA1021</td>
+                <td>Global Packaging</td>
+                <td>Machinery</td>
+                <td>$3,200</td>
+                <td><span class="badge bg-info">Shipped</span></td>
+                <td>Feb 23, 2026</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
-      <!-- Sales Overview -->
-      <div class="bg-white p-4 rounded shadow-sm mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h5 class="mb-0">Sales Overview</h5>
-          <select class="form-select w-auto">
-            <option>This Month</option>
-            <option>Last Month</option>
-            <option>This Year</option>
-          </select>
-        </div>
-
-        <canvas id="salesChart" height="100"></canvas>
-      </div>
     </div>
+  </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      const ctx = document.getElementById("salesChart").getContext("2d");
+<!-- Chart Script -->
+<script>
+  const ctx = document.getElementById("revenueChart");
 
-      const salesChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-          datasets: [
-            {
-              label: "Sales ($)",
-              data: [1200, 1900, 1500, 2400],
-              borderColor: "#198754",
-              backgroundColor: "rgba(25, 135, 84, 0.1)",
-              fill: true,
-              tension: 0.4,
-              pointRadius: 5,
-              pointBackgroundColor: "#198754",
-            },
-          ],
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      datasets: [
+        {
+          label: "Revenue ($)",
+          data: [4000, 6000, 8000, 7500, 9500, 12450],
+          borderColor: "#198754",
+          backgroundColor: "rgba(25,135,84,0.15)",
+          tension: 0.3,
+          fill: true,
         },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: false,
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: "rgba(0,0,0,0.05)",
-              },
-            },
-            x: {
-              grid: {
-                display: false,
-              },
-            },
-          },
-        },
-      });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+      },
+    },
+  });
+</script>
+
+{% endblock %}

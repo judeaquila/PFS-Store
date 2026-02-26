@@ -1,0 +1,128 @@
+:root {
+  --primary: #198754;
+  --primary-dark: #146c43;
+  --primary-light: #20c997;
+  --primary-bg: #e9f7ef;
+  --primary-hover: #157347;
+  --sidebar-bg: #0f3d2e;
+}
+
+body {
+  background-color: #f4f6f9;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  background: var(--sidebar-bg);
+  color: white;
+}
+
+.sidebar h4 {
+  background: var(--primary);
+}
+
+.sidebar a {
+  color: #cfe9df;
+  text-decoration: none;
+  display: block;
+  padding: 12px 20px;
+  transition: 0.2s;
+}
+
+.sidebar a:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Navbar */
+.navbar {
+  background: white;
+  border-bottom: 2px solid var(--primary-bg);
+}
+
+/* Content */
+.content {
+  padding: 25px;
+}
+
+/* Cards */
+.card {
+  border-radius: 10px;
+}
+
+.card h6 {
+  color: #6c757d;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-outline-success {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline-success:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Table headers */
+.table thead {
+  background: var(--primary-bg);
+}
+
+/* Badges */
+.badge-success {
+  background: var(--primary);
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.badge.bg-info {
+  background-color: #0dcaf0 !important;
+}
+
+/* Table Design */
+.table thead {
+  background: var(--primary-bg);
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.badge.bg-success {
+  background-color: var(--primary) !important;
+}
+
+/* Action Buttons */
+.action-icons i {
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: 0.2s;
+}
+
+.action-icons i:hover {
+  transform: scale(1.2);
+}

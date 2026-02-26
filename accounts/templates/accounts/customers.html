@@ -1,0 +1,168 @@
+{% extends "accounts/base.html" %} {% load static %} {% block page_title %}
+Customer Management {% endblock %} {% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="mb-0">Customers</h4>
+    <small class="text-muted"
+      >Manage your customers and their information</small
+    >
+  </div>
+
+  <button
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#addCustomerModal"
+  >
+    + Add Customer
+  </button>
+</div>
+
+<!-- Filters -->
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <input
+          type="text"
+          id="searchCustomer"
+          class="form-control"
+          placeholder="Search by name, email, or phone"
+        />
+      </div>
+
+      <div class="col-md-3">
+        <select id="statusFilter" class="form-select">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn btn-outline-success w-100" id="filterBtn">
+          Filter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Customers Table -->
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Date Joined</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="customerTableBody">
+          <tr>
+            <td>John Traders Ltd</td>
+            <td>john@example.com</td>
+            <td>+254 712 345 678</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td>Feb 10, 2026</td>
+            <td class="text-end action-icons">
+              <i
+                class="bi bi-eye text-success me-2"
+                data-bs-toggle="modal"
+                data-bs-target="#viewCustomerModal"
+              ></i>
+              <i
+                class="bi bi-pencil-square text-primary me-2"
+                data-bs-toggle="modal"
+                data-bs-target="#editCustomerModal"
+              ></i>
+              <i
+                class="bi bi-trash text-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteCustomerModal"
+              ></i>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Fresh Foods Co.</td>
+            <td>freshfoods@example.com</td>
+            <td>+254 723 987 654</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td>Jan 25, 2026</td>
+            <td class="text-end action-icons">
+              <i
+                class="bi bi-eye text-success me-2"
+                data-bs-toggle="modal"
+                data-bs-target="#viewCustomerModal"
+              ></i>
+              <i
+                class="bi bi-pencil-square text-primary me-2"
+                data-bs-toggle="modal"
+                data-bs-target="#editCustomerModal"
+              ></i>
+              <i
+                class="bi bi-trash text-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteCustomerModal"
+              ></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Add Customer Modal -->
+<div class="modal fade" id="addCustomerModal">
+  <div class="modal-dialog">
+    <div class="modal-content border-0">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Customer</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label>Name</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Phone</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Status</label>
+            <select class="form-select">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button class="btn btn-primary">Save Customer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View / Edit / Delete Modals can follow same pattern -->
+
+{% endblock %}

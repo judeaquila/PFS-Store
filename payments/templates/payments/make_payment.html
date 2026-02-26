@@ -1,0 +1,95 @@
+{% extends "main/base.html" %} {% block title %}Confirm Payment | Zee
+Afrika{%endblock %} {% block content %}
+
+<section class="hero hero-small text-center">
+  <div class="container">
+    <h1>Confirm Your Payment</h1>
+    <p>Review your order before completing payment.</p>
+  </div>
+</section>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card checkout-card p-4">
+        <h4 class="mb-4 text-center">Order #{{ payment.order.custom_id }}</h4>
+
+        {% for item in payment.order.items.all %}
+        <div class="d-flex justify-content-between small">
+          <span>{{ item.product.name }} (x{{ item.quantity }})</span>
+          <span>GHS {{ item.get_total_price }}</span>
+        </div>
+        {% endfor %}
+
+        <!-- Order Summary -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between">
+            <span>Total Amount</span>
+            <strong class="fs-5"> GHS {{ payment.amount }} </strong>
+          </div>
+        </div>
+
+        <hr />
+
+        <!-- Customer Email -->
+        <div class="mb-4">
+          <small class="text-muted">Payment Email</small>
+          <div>{{ payment.email }}</div>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="alert alert-light border small">
+          🔒 Your payment is securely processed by Paystack. We do not store
+          your card details.
+        </div>
+
+        <!-- Pay Button -->
+        <button
+          id="pay-btn"
+          class="btn btn-green w-100 py-2"
+          onclick="payWithPaystack()"
+        >
+          Pay GHS {{ payment.amount }}
+        </button>
+
+        <!-- Cancel Option -->
+        <div class="text-center mt-3">
+          <a href="{% url 'checkout' %}" class="text-muted small">
+            ← Go back to checkout
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+  function payWithPaystack() {
+    const payBtn = document.getElementById("pay-btn");
+    payBtn.disabled = true;
+    payBtn.innerText = "Processing...";
+
+    var handler = PaystackPop.setup({
+      key: "{{ paystack_pub_key }}",
+      email: "{{ payment.email }}",
+      amount: "{{ amount_value }}",
+      ref: "{{ payment.ref }}",
+      currency: "GHS",
+
+      callback: function (response) {
+        window.location.href = "{% url 'verify_payment' payment.ref %}";
+      },
+
+      onClose: function () {
+        payBtn.disabled = false;
+        payBtn.innerText = "Pay GHS {{ payment.amount }}";
+      },
+    });
+
+    handler.openIframe();
+  }
+</script>
+
+{% endblock %}

@@ -1,11 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ShippingAddress, Order, OrderItem
-from .cart import Cart
-from django.http import JsonResponse
-import json
+from .models import Product, ShippingAddress, Order, OrderItem, CartItem
+from .models import Cart
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.conf import settings
+from payments.models import Payment
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+
 
 def index(request):
     products = Product.objects.filter(is_active=True)[:6]
@@ -22,139 +26,152 @@ def product_detail(request, slug):
     return render(request, "main/product_detail.html", {"product": product})
 
 
+def get_user_cart(user):
+    cart, created = Cart.objects.get_or_create(user=user)
+    return cart
+
+
+import json
+from django.views.decorators.http import require_POST
+from django.db.models import Sum
+
+@login_required
+@require_POST
 def add_to_cart(request, product_id):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        quantity = int(data.get("quantity", 1))
+    product = get_object_or_404(Product, id=product_id)
 
-        product = get_object_or_404(Product, id=product_id)
+    if product.stock < 1:
+        return JsonResponse({"error": "Out of stock"}, status=400)
 
-        if quantity > product.stock:
-            return JsonResponse({
-                "error": "Not enough stock"
-            }, status=400)
+    # Read quantity from JSON
+    data = json.loads(request.body)
+    quantity = int(data.get("quantity", 1))
 
-        cart = request.session.get("cart", {})
+    if quantity < 1:
+        quantity = 1
 
-        if str(product_id) in cart:
-            cart[str(product_id)] += quantity
-        else:
-            cart[str(product_id)] = quantity
+    if quantity > product.stock:
+        quantity = product.stock
 
-        # Optional: prevent exceeding stock in cart
-        if cart[str(product_id)] > product.stock:
-            cart[str(product_id)] = product.stock
+    cart, created = Cart.objects.get_or_create(user=request.user)
 
-        request.session["cart"] = cart
+    cart_item, item_created = CartItem.objects.get_or_create(
+        cart=cart,
+        product=product
+    )
 
-        return JsonResponse({
-            "cart_count": sum(cart.values())
-        })
+    if item_created:
+        cart_item.quantity = quantity
+    else:
+        new_quantity = cart_item.quantity + quantity
+
+        # Prevent exceeding stock
+        if new_quantity > product.stock:
+            new_quantity = product.stock
+
+        cart_item.quantity = new_quantity
+
+    cart_item.save()
+
+    # Cart count using DB aggregation
+    total_quantity = cart.items.aggregate(
+        total=Sum("quantity")
+    )["total"] or 0
+
+    return JsonResponse({
+        "success": True,
+        "cart_count": total_quantity
+    })
 
 
+@login_required
 def remove_from_cart(request, product_id):
-    cart = request.session.get("cart", {})
-    product_id = str(product_id)
-
-    if product_id in cart:
-        del cart[product_id]
-
-    request.session["cart"] = cart
+    cart = get_user_cart(request.user)
+    cart_item = get_object_or_404(
+        CartItem,
+        cart=cart,
+        product_id=product_id
+    )
+    cart_item.delete()
     return redirect("cart_detail")
 
 
+@login_required
 def update_cart(request, product_id, action):
-    cart = request.session.get("cart", {})
-    product_id = str(product_id)
+    cart = get_user_cart(request.user)
+    cart_item = get_object_or_404(
+        CartItem,
+        cart=cart,
+        product_id=product_id
+    )
 
-    if product_id in cart:
-        if action == "increase":
-            cart[product_id] += 1
+    if action == "increase":
+        if cart_item.quantity < cart_item.product.stock:
+            cart_item.quantity += 1
 
-        elif action == "decrease":
-            cart[product_id] -= 1
+    elif action == "decrease":
+        cart_item.quantity -= 1
+        if cart_item.quantity <= 0:
+            cart_item.delete()
+            return redirect("cart_detail")
 
-        if cart[product_id] <= 0:
-            del cart[product_id]
-
-    request.session["cart"] = cart
+    cart_item.save()
     return redirect("cart_detail")
 
 
+@login_required
 def cart_detail(request):
-    session_cart = request.session.get("cart", {})
-    cart_items = []
-    total_price = 0
+    cart = get_user_cart(request.user)
+    items = cart.items.select_related("product")
 
-    for product_id, quantity in session_cart.items():
-        product = get_object_or_404(Product, id=product_id)
+    subtotal = Decimal("0.00")
 
-        item_total = product.price * quantity
-        total_price += item_total
+    for item in items:
+        subtotal += item.get_total_price()
 
-        cart_items.append({
-            "product": product,
-            "name": product.name,
-            "image": product.get_main_image_url(),
-            "price": product.price,
-            "quantity": quantity,
-            "total_price": item_total
-        })
+    shipping = Decimal("5.00")
+    total = subtotal + shipping
 
-    context = {
-        "cart_items": cart_items,
-        "total_price": total_price
-    }
-
-    return render(request, "main/cart.html", context)
+    return render(request, "main/cart.html", {
+        "cart": cart,
+        "cart_items": items,
+        "subtotal": subtotal,
+        "shipping": shipping,
+        "total": total,
+    })
 
 
 @login_required
 @transaction.atomic
 def checkout(request):
-    session_cart = request.session.get("cart", {})
 
-    if not session_cart:
+    cart = get_user_cart(request.user)
+    items = cart.items.select_related("product")
+
+    if not items.exists():
         return redirect("cart_detail")
 
-    cart_items = []
     subtotal = Decimal("0.00")
 
-    for product_id, quantity in session_cart.items():
-        product = get_object_or_404(Product, id=product_id)
-
-        # Prevent overselling
-        if quantity > product.stock:
+    for item in items:
+        if item.quantity > item.product.stock:
             return redirect("cart_detail")
-
-        item_total = product.price * quantity
-        subtotal += item_total
-
-        cart_items.append({
-            "product": product,
-            "quantity": quantity,
-            "total": item_total
-        })
+        subtotal += item.get_total_price()
 
     shipping = Decimal("5.00")
     grand_total = subtotal + shipping
 
-    # =========================
-    # HANDLE POST (Place Order)
-    # =========================
     if request.method == "POST":
 
-        # Create Shipping Address
         shipping_address = ShippingAddress.objects.create(
             user=request.user,
             address_line_1=request.POST.get("address"),
             city=request.POST.get("city"),
             state=request.POST.get("state", ""),
-            postal_code=request.POST.get("postal_code"),
-            country=request.POST.get("country", "Nigeria")
+            phone_number=request.POST.get("phone_number"),
+            country=request.POST.get("country", "")
         )
 
-        # Create Order
         order = Order.objects.create(
             user=request.user,
             shipping_address=shipping_address,
@@ -162,37 +179,33 @@ def checkout(request):
             status="pending"
         )
 
-        # Create Order Items + Deduct Stock
-        for item in cart_items:
-            product = item["product"]
-            quantity = item["quantity"]
-
+        for item in items:
             OrderItem.objects.create(
                 order=order,
-                product=product,
-                quantity=quantity,
-                price=product.price
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.price
             )
 
-            # Deduct stock
-            product.stock -= quantity
-            product.save()
+        payment = Payment.objects.create(
+            user=request.user,
+            order=order,
+            amount=grand_total,
+            email=request.user.email
+        )
 
-        # Clear session cart
-        request.session["cart"] = {}
+        return render(request, "payments/make_payment.html", {
+            "payment": payment,
+            "paystack_pub_key": settings.PAYSTACK_PUBLIC_KEY,
+            "amount_value": payment.amount_value(),
+        })
 
-        # Redirect to success page
-        return redirect("order_success", order_id=order.id)
-
-    context = {
-        "cart_items": cart_items,
+    return render(request, "main/checkout.html", {
+        "cart_items": items,
         "subtotal": subtotal,
         "shipping": shipping,
-        "grand_total": grand_total
-    }
-
-    return render(request, "main/checkout.html", context)
-
+        "grand_total": grand_total,
+    })
 
 @login_required
 def order_success(request, order_id):

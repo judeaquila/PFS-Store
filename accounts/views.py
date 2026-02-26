@@ -60,3 +60,26 @@ def order_detail_view(request, order_id):
     return render(request, "accounts/order_detail.html", {
         "order": order
     })
+
+
+@login_required
+def admin_dashboard(request):
+    return render(request, 'accounts/admin-dashboard.html')
+
+def products(request):
+    return render(request, 'accounts/admin-products.html')
+
+def orders(request):
+    return render(request, 'accounts/admin-orders.html')
+
+def inventory(request):
+    return render(request, 'accounts/inventory.html')
+
+def customers(request):
+    return render(request, 'accounts/customers.html')
+
+def reports(request):
+    return render(request, 'accounts/reports.html')
+
+def settings(request):
+    return render(request, 'accounts/settings.html')

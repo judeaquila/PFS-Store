@@ -1,6 +1,8 @@
+import secrets
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
+from django.utils import timezone
 from django.templatetags.static import static
 
 
@@ -140,7 +142,7 @@ class ShippingAddress(models.Model):
     address_line_2 = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=20)
     country = models.CharField(max_length=100)
 
     def __str__(self):
@@ -181,9 +183,27 @@ class Order(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    is_paid = models.BooleanField(default=False)
+
+    # Custom Order ID
+    custom_id = models.CharField(max_length=20, unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # Generate custom_id only once
+        if not self.custom_id:
+            self.custom_id = self.generate_order_id()
+        super().save(*args, **kwargs)
+
+    def generate_order_id(self):
+        """
+        Example format: ZAF-20260225-AB12
+        """
+        date_str = self.created_at.strftime("%Y%m%d") if self.created_at else timezone.now().strftime("%Y%m%d")
+        random_str = secrets.token_hex(2).upper()
+        return f"ZAF-{date_str}-{random_str}"
 
     def __str__(self):
-        return f"Order #{self.id}"
+        return self.custom_id or f"Order #{self.id}"
     
 
 class OrderItem(models.Model):

@@ -47,6 +47,9 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
+PAYSTACK_SECRET_KEY = 'sk_test_13aaf4b9d415ea95aa0f57b270ad8aac74c09cbd'
+PAYSTACK_PUBLIC_KEY = 'pk_test_b0374c59928507f9433cd1cbbfabcaa413725883'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

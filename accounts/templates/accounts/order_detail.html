@@ -1,9 +1,9 @@
-{% extends "main/base.html" %} {% block title %}Order #{{ order.id }} | Zee
-Afrika{% endblock %} {% block content %}
+{% extends "main/base.html" %} {% block title %}Order #{{ order.custom_id }} |
+Zee Afrika{% endblock %} {% block content %}
 
 <section class="hero hero-small text-center">
   <div class="container">
-    <h1>Order #{{ order.id }}</h1>
+    <h1>Order #{{ order.custom_id }}</h1>
     <p>Status: {{ order.get_status_display }}</p>
   </div>
 </section>

@@ -1,0 +1,185 @@
+{% extends "accounts/base.html" %} {% load static %} {% block page_title %}
+Reports & Analytics {% endblock %} {% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="mb-0">Reports & Analytics</h4>
+    <small class="text-muted"
+      >Track sales, inventory, and customer metrics</small
+    >
+  </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Total Sales</h6>
+        <h5 class="text-success mb-0">$25,400</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Total Orders</h6>
+        <h5 class="text-success mb-0">320</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">New Customers</h6>
+        <h5 class="text-success mb-0">48</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="text-muted">Low Stock Items</h6>
+        <h5 class="text-warning mb-0">8</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <input
+          type="date"
+          class="form-control"
+          id="fromDate"
+          placeholder="From"
+        />
+      </div>
+
+      <div class="col-md-3">
+        <input type="date" class="form-control" id="toDate" placeholder="To" />
+      </div>
+
+      <div class="col-md-3">
+        <select class="form-select" id="categoryFilter">
+          <option value="">All Categories</option>
+          <option value="foods">Packaged Foods</option>
+          <option value="materials">Packaging Materials</option>
+          <option value="machinery">Machinery</option>
+        </select>
+      </div>
+
+      <div class="col-md-3 text-end">
+        <button class="btn btn-outline-success me-2">Generate</button>
+        <button class="btn btn-outline-secondary">Export CSV</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="mb-3">Sales by Category</h6>
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="mb-3">Orders Trend</h6>
+        <canvas id="ordersChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h6 class="mb-3">Top Customers</h6>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Total Orders</th>
+                <th>Total Spend</th>
+                <th>Last Order</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>John Traders Ltd</td>
+                <td>12</td>
+                <td>$4,500</td>
+                <td>Feb 20, 2026</td>
+              </tr>
+              <tr>
+                <td>Fresh Foods Co.</td>
+                <td>9</td>
+                <td>$3,200</td>
+                <td>Feb 18, 2026</td>
+              </tr>
+              <tr>
+                <td>GreenPack Ltd</td>
+                <td>7</td>
+                <td>$2,100</td>
+                <td>Feb 15, 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const salesCtx = document.getElementById("salesChart").getContext("2d");
+  const salesChart = new Chart(salesCtx, {
+    type: "doughnut",
+    data: {
+      labels: ["Packaged Foods", "Packaging Materials", "Machinery"],
+      datasets: [
+        {
+          label: "Sales by Category",
+          data: [12000, 8000, 5400],
+          backgroundColor: ["#198754", "#20c997", "#0dcaf0"],
+          borderWidth: 1,
+        },
+      ],
+    },
+  });
+
+  const ordersCtx = document.getElementById("ordersChart").getContext("2d");
+  const ordersChart = new Chart(ordersCtx, {
+    type: "line",
+    data: {
+      labels: ["Feb 1", "Feb 5", "Feb 10", "Feb 15", "Feb 20", "Feb 25"],
+      datasets: [
+        {
+          label: "Orders",
+          data: [5, 10, 8, 12, 15, 20],
+          borderColor: "#198754",
+          backgroundColor: "rgba(25,135,84,0.2)",
+          tension: 0.4,
+          fill: true,
+        },
+      ],
+    },
+  });
+</script>
+
+{% endblock %}

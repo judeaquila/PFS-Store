@@ -1,0 +1,227 @@
+{% extends "accounts/base.html" %} {% load static %} {% block page_title %}
+Inventory Management {% endblock %} {% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="mb-0">Inventory Management</h4>
+    <small class="text-muted">Manage stock by category</small>
+  </div>
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <button
+      class="nav-link active"
+      data-bs-toggle="tab"
+      data-bs-target="#foods"
+    >
+      🥫 Packaged Foods
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#materials">
+      📦 Packaging Materials
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#machinery">
+      ⚙ Machinery
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <!-- ================= PACKAGED FOODS ================= -->
+  <div class="tab-pane fade show active" id="foods">
+    <div class="d-flex justify-content-end mb-3">
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addFoodModal"
+      >
+        + Add Batch
+      </button>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Batch</th>
+                <th>Expiry</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Tomato Paste 500g</td>
+                <td>BATCH-01</td>
+                <td>Jun 2026</td>
+                <td><span class="badge bg-success">120</span></td>
+                <td><span class="badge bg-success">Good</span></td>
+                <td class="text-end action-icons">
+                  <i
+                    class="bi bi-eye text-success me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#viewModal"
+                  ></i>
+
+                  <i
+                    class="bi bi-pencil-square text-primary me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                  ></i>
+
+                  <i
+                    class="bi bi-box-seam text-warning me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#adjustStockModal"
+                  ></i>
+
+                  <i
+                    class="bi bi-trash text-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PACKAGING MATERIALS ================= -->
+  <div class="tab-pane fade" id="materials">
+    <div class="d-flex justify-content-end mb-3">
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addMaterialModal"
+      >
+        + Add Material
+      </button>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Stock</th>
+              <th>Reorder Level</th>
+              <th>Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Packaging Bags (Large)</td>
+              <td><span class="badge bg-danger">5</span></td>
+              <td>20</td>
+              <td><span class="badge bg-warning text-dark">Low</span></td>
+              <td class="text-end action-icons">
+                <i class="bi bi-pencil-square text-primary me-2"></i>
+                <i class="bi bi-box-seam text-warning me-2"></i>
+                <i class="bi bi-trash text-danger"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MACHINERY ================= -->
+  <div class="tab-pane fade" id="machinery">
+    <div class="d-flex justify-content-end mb-3">
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addMachineModal"
+      >
+        + Add Machine
+      </button>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Machine</th>
+              <th>Serial</th>
+              <th>Condition</th>
+              <th>Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sealing Machine Model X</td>
+              <td>SMX-001</td>
+              <td>New</td>
+              <td><span class="badge bg-success">Available</span></td>
+              <td class="text-end action-icons">
+                <i class="bi bi-eye text-success me-2"></i>
+                <i class="bi bi-pencil-square text-primary me-2"></i>
+                <i class="bi bi-trash text-danger"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Add Modal Example -->
+<div class="modal fade" id="addFoodModal">
+  <div class="modal-dialog">
+    <div class="modal-content border-0">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Food Batch</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label>Product</label>
+            <select class="form-select"></select>
+          </div>
+          <div class="mb-3">
+            <label>Batch Number</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Expiry Date</label>
+            <input type="date" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Quantity</label>
+            <input type="number" class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,111 +1,125 @@
-{% extends 'main/base.html' %} {% block title %}
-  Home | Zee Afrika
-{% endblock %}
+{% extends 'main/base.html' %} {% block title %} Home | Zee Afrika {%endblock%}
 {% block hero %}
-  <section class="text-center py-5 bg-light">
-    <div class="container">
-      <h1>Healthy Packaged Foods</h1>
-      <p>Premium organic selections for a better lifestyle.</p>
-    </div>
-  </section>
-{% endblock %} {% block content %}
-  <div class="container py-5">
-    <div class="row g-4">
-      {% for product in products %}
-        <div class="col-md-4">
-          <div class="card p-3 text-center h-100">
-            <!-- Product Image -->
-            <img src="{{ product.get_main_image_url }}" class="img-fluid mb-3" style="height:200px; object-fit:cover;" />
-
-            <!-- Product Name -->
-            <h5>{{ product.name }}</h5>
-
-            <!-- Price -->
-            <p class="fw-bold">${{ product.price }}</p>
-
-            {% if product.stock > 0 %}
-              <form class="add-to-cart-form" data-product-id="{{ product.id }}">
-                {% csrf_token %}
-
-                <div class="d-flex justify-content-center align-items-center mb-3">
-                  <button type="button" class="qty-btn decrease">-</button>
-
-                  <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control mx-2 text-center qty-input" style="width:70px;" />
-
-                  <button type="button" class="qty-btn increase">+</button>
-                </div>
-
-                <button type="submit" class="btn btn-success w-100">Add to Cart</button>
-              </form>
-            {% else %}
-              <p class="text-danger fw-semibold">Out of Stock</p>
-            {% endif %}
-          </div>
-        </div>
-      {% empty %}
-        <p>No products available.</p>
-      {% endfor %}
-    </div>
+<section class="text-center py-5 bg-light">
+  <div class="container">
+    <h1>Healthy Packaged Foods</h1>
+    <p>Premium organic selections for a better lifestyle.</p>
   </div>
-{% endblock %}
-{% block extra_js %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      function getCookie(name) {
-        let cookieValue = null
-        if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';')
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim()
-            if (cookie.substring(0, name.length + 1) === name + '=') {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
-              break
-            }
+</section>
+{% endblock %} {% block content %}
+<div class="container py-5">
+  <div class="row g-4">
+    {% for product in products %}
+    <div class="col-md-4">
+      <div class="card p-3 text-center h-100">
+        <!-- Product Image -->
+        <img
+          src="{{ product.get_main_image_url }}"
+          class="img-fluid mb-3"
+          style="height: 200px; object-fit: cover"
+        />
+
+        <!-- Product Name -->
+        <h5>{{ product.name }}</h5>
+
+        <!-- Price -->
+        <p class="fw-bold">${{ product.price }}</p>
+
+        {% if product.stock > 0 %}
+        <form class="add-to-cart-form" data-product-id="{{ product.id }}">
+          {% csrf_token %}
+
+          <div class="d-flex justify-content-center align-items-center mb-3">
+            <button type="button" class="qty-btn decrease">-</button>
+
+            <input
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              max="{{ product.stock }}"
+              class="form-control mx-2 text-center qty-input"
+              style="width: 70px"
+            />
+
+            <button type="button" class="qty-btn increase">+</button>
+          </div>
+
+          <button
+            class="btn btn-green add-to-cart-btn"
+            data-product-id="{{ product.id }}"
+          >
+            Add to Cart
+          </button>
+        </form>
+        {% else %}
+        <p class="text-danger fw-semibold">Out of Stock</p>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <p>No products available.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
           }
         }
-        return cookieValue
       }
-    
-      const csrftoken = getCookie('csrftoken')
-    
-      document.querySelectorAll('.add-to-cart-form').forEach((form) => {
-        const input = form.querySelector('.qty-input')
-        const increaseBtn = form.querySelector('.increase')
-        const decreaseBtn = form.querySelector('.decrease')
-        const maxStock = parseInt(input.getAttribute('max'))
-        const productId = form.dataset.productId
-    
-        // Quantity Controls
-        increaseBtn.addEventListener('click', function () {
-          let value = parseInt(input.value) || 1
-          if (value < maxStock) input.value = value + 1
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie("csrftoken");
+
+    document.querySelectorAll(".add-to-cart-form").forEach((form) => {
+      const input = form.querySelector(".qty-input");
+      const increaseBtn = form.querySelector(".increase");
+      const decreaseBtn = form.querySelector(".decrease");
+      const maxStock = parseInt(input.getAttribute("max"));
+      const productId = form.dataset.productId;
+
+      // Quantity Controls
+      increaseBtn.addEventListener("click", function () {
+        let value = parseInt(input.value) || 1;
+        if (value < maxStock) input.value = value + 1;
+      });
+
+      decreaseBtn.addEventListener("click", function () {
+        let value = parseInt(input.value) || 1;
+        if (value > 1) input.value = value - 1;
+      });
+
+      // AJAX Add to Cart
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        fetch(`/add/${productId}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          body: JSON.stringify({
+            quantity: input.value,
+          }),
         })
-    
-        decreaseBtn.addEventListener('click', function () {
-          let value = parseInt(input.value) || 1
-          if (value > 1) input.value = value - 1
-        })
-    
-        // AJAX Add to Cart
-        form.addEventListener('submit', function (e) {
-          e.preventDefault()
-    
-          fetch(`/add/${productId}/`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': csrftoken
-            },
-            body: JSON.stringify({
-              quantity: input.value
-            })
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              document.querySelector('.cart-badge').innerText = data.cart_count
-            })
-        })
-      })
-    })
-  </script>
+          .then((response) => response.json())
+          .then((data) => {
+            document.querySelector(".cart-badge").innerText = data.cart_count;
+          });
+      });
+    });
+  });
+</script>
 {% endblock %}

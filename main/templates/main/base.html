@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} Zee Afrika {% endblock %}</title>
+    <meta name="csrf-token" content="{{ csrf_token }}" />
 
     <!-- Bootstrap -->
     <link
@@ -139,6 +140,44 @@
     <script>
       window.addEventListener("DOMContentLoaded", function () {
         document.body.classList.add("loaded");
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const csrfToken = document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content");
+
+        document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
+          button.addEventListener("click", function () {
+            const productId = this.dataset.productId;
+
+            fetch(`/cart/add/${productId}/`, {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": csrfToken,
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.success) {
+                  // Update navbar counter
+                  const cartBadge = document.querySelector(".cart-badge");
+                  cartBadge.textContent = data.cart_count;
+
+                  // Optional: success animation
+                  cartBadge.classList.add("cart-bounce");
+                  setTimeout(() => {
+                    cartBadge.classList.remove("cart-bounce");
+                  }, 300);
+                } else {
+                  alert(data.error);
+                }
+              })
+              .catch((error) => console.error("Error:", error));
+          });
+        });
       });
     </script>
     {% block extra_js %} {% endblock %}
