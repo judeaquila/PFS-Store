@@ -129,7 +129,7 @@ def cart_detail(request):
     for item in items:
         subtotal += item.get_total_price()
 
-    shipping = Decimal("5.00")
+    shipping = Decimal("0.00")
     total = subtotal + shipping
 
     return render(request, "main/cart.html", {
@@ -158,7 +158,7 @@ def checkout(request):
             return redirect("cart_detail")
         subtotal += item.get_total_price()
 
-    shipping = Decimal("5.00")
+    shipping = Decimal("0.00")
     grand_total = subtotal + shipping
 
     if request.method == "POST":

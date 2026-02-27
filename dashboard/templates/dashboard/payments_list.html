@@ -1,0 +1,118 @@
+{% extends "dashboard/base.html" %} {% load static %} {% block title %}Payments
+| Zee Afrika{% endblock %} {% block page_title %}All Payments{% endblock %}
+{%block content %}
+<div>
+  <form method="get" class="row g-2 mb-3 align-items-end">
+    <div class="col-md-4">
+      <label for="search" class="form-label">Search Payment Ref</label>
+      <input
+        type="text"
+        name="search"
+        id="search"
+        value="{{ search_query }}"
+        class="form-control"
+        placeholder="Enter payment ref"
+      />
+    </div>
+    <div class="col-md-3">
+      <label for="verified" class="form-label">Verified</label>
+      <select name="verified" id="verified" class="form-select">
+        <option value="">All</option>
+        <option
+          value="yes"
+          {%
+          if
+          verified_filter=""
+          ="yes"
+          %}selected{%
+          endif
+          %}
+        >
+          Yes
+        </option>
+        <option
+          value="no"
+          {%
+          if
+          verified_filter=""
+          ="no"
+          %}selected
+          {%
+          endif
+          %}
+        >
+          No
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-success w-100">Filter</button>
+    </div>
+  </form>
+</div>
+<div class="card shadow-sm">
+  <div class="card-header bg-white fw-semibold">Payments</div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Payment Ref</th>
+            <th>Order</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Verified</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in payments %}
+          <tr>
+            <td>{{ payment.ref }}</td>
+            <td>{{ payment.order.custom_id }}</td>
+            <td>{{ payment.user.email }}</td>
+            <td>GHS {{ payment.amount }}</td>
+            <td>
+              {% if payment.verified %}
+              <span class="badge bg-success">Yes</span>
+              {% else %}
+              <span class="badge bg-warning text-dark">No</span>
+              {% endif %}
+            </td>
+            <td>{{ payment.created_at|date:"M d, Y H:i" }}</td>
+            <td>
+              <!-- Link to associated order -->
+              <a
+                href="{% url 'dashboard_order_detail' payment.order.custom_id %}"
+                class="text-success me-2"
+                data-bs-toggle="tooltip"
+                title="View Order"
+              >
+                <i class="bi bi-eye-fill"></i>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center text-muted">
+              No payments found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Initialize Bootstrap tooltips
+  var tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]'),
+  );
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+</script>
+{% endblock %}

@@ -31,7 +31,7 @@
             {{ order.get_status_display }}
           </span>
         </td>
-        <td>${{ order.total_amount }}</td>
+        <td>GH₵ {{ order.total_amount }}</td>
         <td>{{ order.created_at|date:"M d, Y" }}</td>
       </tr>
       {% endfor %}

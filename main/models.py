@@ -225,3 +225,14 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product} x {self.quantity}"
+
+
+class Batch(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="batches")
+    batch_number = models.CharField(max_length=50)
+    expiry_date = models.DateField()
+    stock = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.batch_number}"

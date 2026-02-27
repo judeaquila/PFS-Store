@@ -34,3 +34,20 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+class CompanySettings(models.Model):
+    company_name = models.CharField(max_length=255, default="Zee Afrika")
+    address = models.TextField(blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(blank=True)
+    logo = models.ImageField(upload_to="branding/", blank=True, null=True)
+    favicon = models.ImageField(upload_to="branding/", blank=True, null=True)
+    theme_color = models.CharField(max_length=7, default="#198754")
+
+    class Meta:
+        verbose_name = "Company Setting"
+        verbose_name_plural = "Company Settings"
+
+    def __str__(self):
+        return self.company_name

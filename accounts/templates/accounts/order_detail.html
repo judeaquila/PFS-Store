@@ -32,9 +32,9 @@ Zee Afrika{% endblock %} {% block content %}
                 <span class="text-muted">Product unavailable</span>
                 {% endif %}
               </td>
-              <td>${{ item.price }}</td>
+              <td>GH₵ {{ item.price }}</td>
               <td>{{ item.quantity }}</td>
-              <td>${{ item.get_total_price }}</td>
+              <td>GH₵ {{ item.get_total_price }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -49,7 +49,7 @@ Zee Afrika{% endblock %} {% block content %}
 
         <div class="d-flex justify-content-between">
           <span>Total Amount</span>
-          <strong>${{ order.total_amount }}</strong>
+          <strong>GH₵ {{ order.total_amount }}</strong>
         </div>
 
         <hr />

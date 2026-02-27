@@ -32,7 +32,7 @@
           </div>
         </td>
 
-        <td>${{ item.product.price }}</td>
+        <td>GH₵ {{ item.product.price }}</td>
 
         <td>
           <a
@@ -50,7 +50,7 @@
           >
         </td>
 
-        <td>${{ item.get_total_price }}</td>
+        <td>GH₵ {{ item.get_total_price }}</td>
 
         <td>
           <a
@@ -65,7 +65,7 @@
   </table>
 
   <div class="text-end">
-    <h4>Total: ${{ total }}</h4>
+    <h4>Total: GH₵ {{ total }}</h4>
     {% if request.user.is_authenticated %}
     <a href="{% url 'checkout' %}" class="btn btn-green">
       Proceed to Checkout

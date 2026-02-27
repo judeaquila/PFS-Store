@@ -15,7 +15,7 @@
         /></a>
 
         <h5>{{ product.name }}</h5>
-        <p class="fw-bold text-success">${{ product.price }}</p>
+        <p class="fw-bold text-success">GH₵ {{ product.price }}</p>
 
         {% if product.stock > 0 %}
         <form class="add-to-cart-form" data-product-id="{{ product.id }}">

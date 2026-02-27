@@ -1,0 +1,142 @@
+{% extends "dashboard/base.html" %} {% load static %} {% block title %}Order
+{{order.custom_id }}{% endblock %} {% block page_title %} Order Details
+{%endblock%} {% block content %}
+
+<div class="row g-4">
+  <!-- Order Info -->
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="mb-3">Order ID: {{ order.custom_id }}</h5>
+        <!-- Current Status Badge -->
+        <p class="mt-2">
+          <strong>Status:</strong>
+          {% if order.status == "pending" %}
+          <span class="badge bg-warning text-dark">Pending</span>
+          {% elif order.status == "processing" %}
+          <span class="badge bg-info text-dark">Processing</span>
+          {% elif order.status == "shipped" %}
+          <span class="badge bg-primary">Shipped</span>
+          {% elif order.status == "completed" %}
+          <span class="badge bg-success">Completed</span>
+          {% elif order.status == "cancelled" %}
+          <span class="badge bg-danger">Cancelled</span>
+          {% endif %}
+        </p>
+        <p><strong>Customer:</strong> {{ order.user.email }}</p>
+        <p><strong>Date:</strong> {{ order.created_at }}</p>
+        <p><strong>Total Amount:</strong> GHS {{ order.total_amount }}</p>
+
+        <!-- STATUS UPDATE -->
+        <form method="POST" class="mt-3">
+          {% csrf_token %}
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Update Status</label>
+              <select name="status" class="form-select">
+                {% for value, label in order.STATUS_CHOICES %}
+                <option
+                  value="{{ value }}"
+                  {%
+                  if
+                  order.status=""
+                  ="value"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  {{ label }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-3 mt-3 mt-md-0">
+              <button type="submit" class="btn btn-success w-100">
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <hr />
+
+        <h6 class="fw-semibold mt-4">Items</h6>
+
+        <table class="table">
+          <thead class="table-light">
+            <tr>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in order.items.all %}
+            <tr>
+              <td>{{ item.product }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>GHS {{ item.price }}</td>
+              <td>GHS {{ item.get_total_price }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side Panels -->
+  <div class="col-lg-4">
+    <!-- Shipping Address -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-white fw-semibold">Shipping Address</div>
+      <div class="card-body">
+        {% if order.shipping_address %}
+        <p class="mb-1">{{ order.shipping_address.address_line_1 }}</p>
+        {% if order.shipping_address.address_line_2 %}
+        <p class="mb-1">{{ order.shipping_address.address_line_2 }}</p>
+        {% endif %}
+        <p class="mb-1">
+          {{ order.shipping_address.city }}, {{ order.shipping_address.state }}
+        </p>
+        <p class="mb-1">{{ order.shipping_address.country }}</p>
+        <p class="mb-0">
+          <strong>Phone:</strong>
+          {{ order.shipping_address.phone_number }}
+        </p>
+        {% else %}
+        <p class="text-muted">No shipping address available.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Payment Info -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-white fw-semibold">Payment Information</div>
+      <div class="card-body">
+        {% if payment %}
+        <p><strong>Reference:</strong><br />{{ payment.ref }}</p>
+        <p><strong>Email:</strong> {{ payment.email }}</p>
+        <p><strong>Amount:</strong> GHS {{ payment.amount }}</p>
+
+        <p>
+          <strong>Status:</strong>
+          {% if payment.verified %}
+          <span class="badge bg-success">Verified</span>
+          {% else %}
+          <span class="badge bg-warning text-dark">Unverified</span>
+          {% endif %}
+        </p>
+
+        <p class="text-muted small">Created: {{ payment.created_at }}</p>
+
+        {% else %}
+        <p class="text-muted">No payment record found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

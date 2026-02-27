@@ -1,0 +1,16 @@
+<tr id="batch-{{ batch.id }}">
+  <td>{{ batch.product.name }}</td>
+  <td>{{ batch.batch_number }}</td>
+  <td>{{ batch.expiry_date }}</td>
+  <td>{{ batch.stock }}</td>
+  <td class="text-end action-icons">
+    <i
+      class="bi bi-pencil-square text-primary me-2 edit-batch"
+      data-id="{{ batch.id }}"
+    ></i>
+    <i
+      class="bi bi-trash text-danger delete-batch"
+      data-id="{{ batch.id }}"
+    ></i>
+  </td>
+</tr>
